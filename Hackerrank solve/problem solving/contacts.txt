@@ -1,0 +1,124 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int ALPHABET_SIZE = 26;
+
+
+struct TrieNode {
+    struct TrieNode* children[ALPHABET_SIZE];
+
+    bool isEndOfWord;
+    int counts=0;
+};
+
+// Returns new trie node (initialized to NULLs)
+struct TrieNode* getNode(void)
+{
+    struct TrieNode* pNode = new TrieNode;
+
+    pNode->isEndOfWord = false;
+
+    for (int i = 0; i < ALPHABET_SIZE; i++)
+        pNode->children[i] = NULL;
+
+    return pNode;
+}
+
+
+void insert(struct TrieNode* root, string key)
+{
+    struct TrieNode* pCrawl = root;
+
+    for (int i = 0; i < key.length(); i++) {
+        int index = key[i] - 'a';
+
+        if (!pCrawl->children[index]){
+            pCrawl->children[index] = getNode();
+        }
+
+        pCrawl = pCrawl->children[index];
+        pCrawl->counts++;
+        //cout<<pCrawl->counts<<endl;
+    }
+
+    pCrawl->isEndOfWord = true;
+
+}
+
+int counts=0;
+
+int search(struct TrieNode* root, string key)
+{
+
+    struct TrieNode* pCrawl = root;
+int index;
+    for (int i = 0; i < key.length(); i++) {
+         index = key[i] - 'a';
+
+        if (!pCrawl->children[index]){
+
+            return 0;
+        }
+
+        pCrawl = pCrawl->children[index];
+
+    }
+       // cout<<pCrawl->children[index]<<endl;
+
+
+
+    return pCrawl->counts;
+}
+
+
+
+
+
+// Driver
+int main()
+{
+int n,t;
+
+scanf("%d",&n);
+    string keys,keys2;
+vector< pair<string,string> >strings;
+vector< pair<string,int> >strings_add;
+vector< pair<string,int> >strings_find;
+
+    string first="add",second="find";
+
+for(int i=0;i<n;i++){
+    cin>>keys>>keys2;
+strings.push_back(make_pair(keys,keys2));
+}
+
+    struct TrieNode* root = getNode();
+
+vector< pair<string,string> >::iterator it;
+it=strings.begin();
+
+
+int indicator,ans[n+1],ansindx=0;
+
+    for (int i = 0; i < n; i++){
+        if(it->first=="add"){
+        insert(root, it->second);
+        }
+        else{
+
+                    indicator=search(root,it->second);
+                   // cout<<indicator<<endl;
+        ans[ansindx]=indicator;
+        ansindx++;
+        }
+    it++;
+    }
+
+    for(int i=0;i<ansindx;i++){
+        cout<<ans[i]<<endl;
+    }
+
+
+
+    return 0;
+}

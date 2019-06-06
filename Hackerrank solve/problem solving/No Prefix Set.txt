@@ -1,0 +1,114 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+string fault;
+const int ALPHABET_SIZE = 10;
+int counts=0,flag=0;
+
+/// trie node
+struct TrieNode
+{
+    struct TrieNode *children[ALPHABET_SIZE];
+
+    /// isEndOfWord is true if the node represents
+    /// end of a word
+    bool isEndOfWord;
+};
+
+/// Returns new trie node (initialized to NULLs)
+struct TrieNode *getNode(void)
+{
+    struct TrieNode *pNode =  new TrieNode;
+
+    pNode->isEndOfWord = false;
+
+    for (int i = 0; i < ALPHABET_SIZE; i++){
+        pNode->children[i] = NULL;
+
+    }
+
+    return pNode;
+}
+
+
+void insert(struct TrieNode *root, string key)
+{
+
+
+
+    struct TrieNode *pCrawl = root;
+
+int index;
+    for (int i = 0; i < key.length(); i++)
+    {
+
+         index = key[i]-'a';
+
+        if (!pCrawl->children[index]){
+            pCrawl->children[index] = getNode();
+pCrawl = pCrawl->children[index];
+        }
+        else {
+                pCrawl = pCrawl->children[index];
+               if((pCrawl->isEndOfWord==true || i==key.length()-1) && flag==0){
+
+                counts=1;
+                fault=key;
+                flag=1;
+               }
+        }
+//cout<<pCrawl->isEndOfWord<<endl;
+//if(i<key.length()-1){
+
+//}
+
+    }
+
+
+    /// mark last node as leaf
+    pCrawl->isEndOfWord = true;
+}
+
+
+
+/// Driver
+int main()
+{
+   long long int t,n;
+
+
+
+            counts=0;
+            flag=0;
+
+cin>>n;
+    string s;
+    struct TrieNode *root = getNode();
+
+vector<pair<string,int>>sizes;
+
+    for(int i=0;i<n;i++){
+        cin>>s;
+sizes.push_back(make_pair(s,s.size()));
+
+    }
+
+vector<pair<string,int>>::iterator it;
+it=sizes.begin();
+    for (int i = 0; i < n; i++){
+
+        insert(root,it->first);
+        it++;
+    }
+
+                if(counts==1){
+                    printf("BAD SET\n");
+                    cout<<fault<<endl;
+                }
+                else{
+                    printf("GOOD SET\n");
+                }
+
+
+    return 0;
+}

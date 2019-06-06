@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define limit 100000
+int queues[100000];
+int font=1;
+int rare=font;
+void enqueue(int i){
+    if(rare==limit) rare=font;
+    queues[rare]=i;
+rare++;
+}
+void dequeue(){
+for(int x=font+1;x<=rare;x++){
+    queues[x-1]=queues[x];
+}
+rare--;
+}
+void queueshow(){
+    for(int x=1;x<=rare-1;x++){
+        cout<<queues[x]<<" ";
+    }
+}
+int main(){
+int i,j,l,x,cases2;
+int cases;
+cin>>cases;
+while(cases--){
+
+    cin>>cases2;
+ if(cases2==1){
+    cin>>x;
+    enqueue(x);
+}
+else if(cases2==2){
+    dequeue();
+}
+else{
+    cout<<queues[font]<<endl;
+}
+}
+}

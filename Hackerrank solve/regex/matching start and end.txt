@@ -1,0 +1,2 @@
+Regex_Pattern = r"^[0-9]((\W){4}|(\w){4})\.$"	# Do not delete 'r'.
+
